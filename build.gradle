@@ -1,0 +1,69 @@
+import org.gradle.nativeplatform.platform.internal.DefaultNativePlatform
+
+plugins {
+    id 'java'
+    id 'application'
+    // use for javafx support
+    id 'org.openjfx.javafxplugin' version '0.0.10'
+}
+
+def mainClassName = "edv.memmel.example.Main"
+
+application {
+    mainClass.set(mainClassName)
+}
+
+group 'edv.memmel'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+    //implementation files('libs/some_local_library_jar_file.jar')
+}
+
+// Use for JavaFX project:
+javafx {
+    version = '16'
+    modules = ['javafx.controls', 'javafx.fxml']
+}
+
+test {
+    useJUnitPlatform()
+}
+
+task javaFxJar(type: Jar) {
+    dependsOn compileJava
+    //destinationDirectory = file("${rootDir}/releases")
+    OperatingSystem operatingSystem = DefaultNativePlatform.currentOperatingSystem;
+    if (operatingSystem.isWindows()) {
+        archiveBaseName = "example-win"
+    } else if (operatingSystem.isMacOsX()) {
+        archiveBaseName = "example-osx"
+    } else if (operatingSystem.isLinux()) {
+        archiveBaseName = "example-linux"
+    } else {
+        archiveBaseName = "example"
+    }
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+
+    from(sourceSets.main.output) {
+        include "**"
+        //exclude "**/TestServerClients.class"
+        //exclude "**/client/Client.class"
+        //exclude "**/view/*"
+    }
+
+    manifest {
+        // a non-javafx main class is needed for jars
+        attributes 'Main-Class': mainClassName
+    }
+}
