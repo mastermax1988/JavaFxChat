@@ -14,11 +14,11 @@ Basic gradle project including JavaFX and JUnit support
 
 ## 1. Running the project:
 Import a clone/fork of this project as a gradle project in IntelliJ or any other IDE.
-The run the gradle task `.\gradlew run`
+Then run the gradle task `.\gradlew.bat run` on Win or `.\gradlew run` on Unix systems.
 
 If you see an empty window popping up, congratulations! JavaFX is running fine. You're good to go.
 
-## 2. Running checks an tests
+## 2. Running checks and tests
 
 The gradle task `./gradle test` runs all the JUnit tests.
 
@@ -44,9 +44,9 @@ ones for Windows, MacOS X or Linux etc.
 Running the gradle task `javaFxJar` will create a so called fat jar in `build/libs`.
 
 This gradle task analyzes your current operating system and architecture, downloads the correct
-JavaFX libraries, compiles your project, packages up the class files of this project wrap it all up
+JavaFX libraries, compiles your project, packages up the class files of this project and wraps it all up
 in a single fat jar file you can just run with a normal compatible JRE. So whoever wants to run this
-JavaFX application just has to install a JRE (try the most recent one, Java 17) and then double 
+JavaFX application just has to install a JRE (try the most recent one: Java 16 or 17) and then double 
 click the jar file (on Windows, for example) or run it with `java -jar NAME_OF_JAR_FILE.jar`
 
 ### 3.3 Care
