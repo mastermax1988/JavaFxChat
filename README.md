@@ -46,7 +46,7 @@ Running the gradle task `javaFxJar` will create a so called fat jar in `build/li
 This gradle task analyzes your current operating system and architecture, downloads the correct
 JavaFX libraries, compiles your project, packages up the class files of this project and wraps it all up
 in a single fat jar file you can just run with a normal compatible JRE. So whoever wants to run this
-JavaFX application just has to install a JRE (try the most recent one: Java 16 or 17) and then double 
+JavaFX application just has to install a JRE (should be at least Java 11) and then double 
 click the jar file (on Windows, for example) or run it with `java -jar NAME_OF_JAR_FILE.jar`
 
 ### 3.3 Care
