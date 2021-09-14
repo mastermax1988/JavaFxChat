@@ -5,6 +5,8 @@
 build
 # Ignore IntelliJ default output directory (usually not used with gradle, just in case)
 out
+# Ignore doc folder
+doc
 
 # Ignore IntelliJ IDE folders
 .idea/workspace.xml

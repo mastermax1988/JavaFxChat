@@ -5,6 +5,9 @@ plugins {
     id 'application'
     // use for javafx support
     id 'org.openjfx.javafxplugin' version '0.0.10'
+    id 'checkstyle'
+    id 'jacoco'
+    id "com.github.spotbugs" version "4.7.5"
 }
 
 sourceCompatibility = 11
@@ -35,8 +38,64 @@ javafx {
     modules = ['javafx.controls', 'javafx.fxml']
 }
 
+reporting.baseDir = "test-reports"
+
 test {
     useJUnitPlatform()
+    finalizedBy jacocoTestReport
+}
+
+checkstyle {
+    toolVersion '8.43'
+    maxWarnings = 0
+}
+
+spotbugsMain {
+    reports {
+        html {
+            enabled = true
+        }
+        xml {
+            enabled = false
+        }
+    }
+}
+
+jacocoTestReport {
+    reports {
+        html.destination file("test-reports/jacoco")
+        xml.enabled false
+        csv.enabled false
+    }
+    dependsOn test // always run tests before generating new report
+    finalizedBy jacocoTestCoverageVerification
+    // always check coverage after generating report
+}
+
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                counter = "BRANCH"
+                value = "COVEREDRATIO"
+                // TODO change to whatever your minimum branch coverage should be
+                minimum = 0.5
+            }
+        }
+        rule {
+            limit {
+                counter = "INSTRUCTION"
+                value = "MISSEDRATIO"
+                // TODO change to whatever missed ratio you find acceptable
+                maximum = 0.2
+            }
+        }
+    }
+}
+
+javadoc {
+    source = sourceSets.main.allJava
+    destinationDir = file("doc/")
 }
 
 task javaFxJar(type: Jar) {
