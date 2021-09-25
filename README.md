@@ -6,7 +6,7 @@ including JUnit support and a JavaFX application.
 
 Different types of templates can be found in the different branches of this project:
 
-- `main`:
+- `master`:
   Basic gradle project including JavaFX and JUnit support
 - `spotbugs_checkstyle_jacoco`:
   Support for jacoco, checkstyle and spotbugs has been added compared to `main`: Run the "check"
