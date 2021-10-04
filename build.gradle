@@ -23,6 +23,9 @@ def mainClassName = "client.console.Main"
 application {
     mainClass.set(mainClassName)
 }
+run {
+   standardInput = System.in
+}
 
 group 'edv.memmel'
 version '1.0-SNAPSHOT'

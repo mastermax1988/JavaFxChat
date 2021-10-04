@@ -54,7 +54,7 @@ class ServerTest {
   @Test
   void testRegister() {
     try {
-      outputStream.writeObject(new RegisterMessage());
+      outputStream.writeObject(new RegisterMessage("test"));
     } catch (IOException e) {
       fail(e);
     }

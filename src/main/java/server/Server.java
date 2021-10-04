@@ -7,6 +7,9 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashSet;
 import java.util.Set;
+import messageTypes.ChatMessageRec;
+import messageTypes.ChatMessageSend;
+import messageTypes.EnterMsg;
 import messageTypes.RegisterMessage;
 
 public class Server {
@@ -54,17 +57,24 @@ public class Server {
   }
 
   private void handleIncomingMessage(ServerConnection serverConnection) {
-    try{
-      while (serverConnection.socket.isConnected()){
+    try {
+      while (serverConnection.socket.isConnected()) {
         Object msg = serverConnection.inputStream.readObject();
-        if(msg instanceof RegisterMessage){
-          System.out.println("Register " + ((RegisterMessage) msg).name);
+        if (msg instanceof RegisterMessage) {
+          serverConnection.clientName = ((RegisterMessage) msg).name;
+          for (ServerConnection c : connections) {
+            c.sendMessage(new EnterMsg(serverConnection.clientName));
+          }
+        } else if (msg instanceof ChatMessageSend) {
+          for (ServerConnection c : connections) {
+            c.sendMessage(
+                new ChatMessageRec(serverConnection.clientName, ((ChatMessageSend) msg).msg));
+          }
         }
       }
-    } catch (ClassNotFoundException e){
+    } catch (ClassNotFoundException e) {
       e.printStackTrace();
-    }
-    catch (IOException e){
+    } catch (IOException e) {
       connections.remove(serverConnection);
     }
   }
