@@ -1,4 +1,4 @@
-package messageTypes;
+package messagetypes;
 
 
 import java.io.Serializable;

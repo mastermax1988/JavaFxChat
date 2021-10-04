@@ -9,15 +9,16 @@ import java.io.ObjectOutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
-import messageTypes.ChatMessageRec;
-import messageTypes.ChatMessageSend;
-import messageTypes.EnterMsg;
-import messageTypes.LeaveMsg;
-import messageTypes.RegisterMessage;
+import messagetypes.ChatMessageRec;
+import messagetypes.ChatMessageSend;
+import messagetypes.EnterMsg;
+import messagetypes.LeaveMsg;
+import messagetypes.RegisterMessage;
 
 public class ShellUI {
   private BufferedReader in;
   private ClientConnection clientConnection;
+  private String name;
 
   public ShellUI() {
     try {
@@ -37,9 +38,7 @@ public class ShellUI {
   void start() {
     try {
       System.out.println("[Client]: Enter your name");
-      String name = null;
       name = in.readLine();
-      System.out.println("\n");
       Thread serverListener = new Thread(this::serverListener);
       serverListener.start();
       clientConnection.outputStream.writeObject(new RegisterMessage(name));
@@ -60,8 +59,7 @@ public class ShellUI {
           System.out.println("[SERVER]: " + ((LeaveMsg) msg).name + " left.");
         } else if (msg instanceof ChatMessageRec) {
           ChatMessageRec c = (ChatMessageRec) msg;
-          System.out.println("[SERVER]: " + c.name + ": ");
-          System.out.println("[SERVER]: " + c.msg + "\n");
+          System.out.println("[SERVER:" + c.name + "]: " + c.msg);
         }
       }
     } catch (IOException e) {

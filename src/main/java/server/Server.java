@@ -7,10 +7,10 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashSet;
 import java.util.Set;
-import messageTypes.ChatMessageRec;
-import messageTypes.ChatMessageSend;
-import messageTypes.EnterMsg;
-import messageTypes.RegisterMessage;
+import messagetypes.ChatMessageRec;
+import messagetypes.ChatMessageSend;
+import messagetypes.EnterMsg;
+import messagetypes.RegisterMessage;
 
 public class Server {
 
