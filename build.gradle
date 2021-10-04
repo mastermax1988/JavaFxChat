@@ -9,11 +9,16 @@ plugins {
     id 'jacoco'
     id "com.github.spotbugs" version "4.7.5"
 }
+task startServer(type: JavaExec){
+    classpath = sourceSets.main.runtimeClasspath;
+    mainClass.set("server.Main")
+}
 
 sourceCompatibility = 11
 targetCompatibility = 11
 
-def mainClassName = "edv.memmel.example.Main"
+//def mainClassName = "edv.memmel.example.Main"
+def mainClassName = "client.Main"
 
 application {
     mainClass.set(mainClassName)
