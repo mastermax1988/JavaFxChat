@@ -1,4 +1,4 @@
-package edv.memmel.example.view;
+package client.javafx.view;
 
 /**
  * FX controller class for main window.

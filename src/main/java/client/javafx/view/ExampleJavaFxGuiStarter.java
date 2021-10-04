@@ -1,4 +1,4 @@
-package edv.memmel.example.view;
+package client.javafx.view;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
