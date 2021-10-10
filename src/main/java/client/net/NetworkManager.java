@@ -1,11 +1,13 @@
 package client.net;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import messagetypes.ChatMessageRec;
 import messagetypes.EnterMsg;
 import messagetypes.LeaveMsg;
@@ -14,15 +16,16 @@ import messagetypes.Message;
 public class NetworkManager {
 
   private static NetworkManager instance;
+  private boolean javaFxEnabled = false;
 
   private ClientConnection clientConnection;
-
+  private StringProperty messages;
 
   private NetworkManager() {
-
+    messages = new SimpleStringProperty("");
   }
 
-  public static NetworkManager getInstance() {
+  public static synchronized NetworkManager getInstance() {
     if (instance == null) {
       instance = new NetworkManager();
     }
@@ -49,12 +52,12 @@ public class NetworkManager {
       while (true) {
         Object msg = clientConnection.inputStream.readObject();
         if (msg instanceof EnterMsg) {
-          System.out.println("[SERVER]: " + ((EnterMsg) msg).name + " entered the chat.");
+          addMessage("[SERVER]: " + ((EnterMsg) msg).name + " entered the chat.");
         } else if (msg instanceof LeaveMsg) {
-          System.out.println("[SERVER]: " + ((LeaveMsg) msg).name + " left.");
+          addMessage("[SERVER]: " + ((LeaveMsg) msg).name + " left.");
         } else if (msg instanceof ChatMessageRec) {
           ChatMessageRec c = (ChatMessageRec) msg;
-          System.out.println("[SERVER:" + c.name + "]: " + c.msg);
+          addMessage("[SERVER:" + c.name + "]: " + c.msg);
         }
       }
     } catch (IOException e) {
@@ -64,13 +67,21 @@ public class NetworkManager {
     }
   }
 
+  private void addMessage(String messageString) {
+    String newValue = messages.getValue() + "\n" + messageString;
+    if (javaFxEnabled) {
+      Platform.runLater(() -> messages.set(newValue));
+    } else {
+      messages.set(newValue);
+    }
+  }
+
   public void sendMessage(Message message) {
     try {
       clientConnection.outputStream.writeObject(message);
     } catch (IOException e) {
       e.printStackTrace();
     }
-
   }
 
   public void shutdown() {
@@ -79,5 +90,13 @@ public class NetworkManager {
     } catch (IOException e) {
       e.printStackTrace();
     }
+  }
+
+  public StringProperty messagesProperty() {
+    return messages;
+  }
+
+  public void setJavaFxEnabled(boolean javaFxEnabled) {
+    this.javaFxEnabled = javaFxEnabled;
   }
 }

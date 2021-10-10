@@ -25,6 +25,13 @@ public class ShellUI {
       System.out.println("[Client]: Enter your name");
       name = in.readLine();
       System.out.println("Type !quit to quit.");
+      networkManager
+          .messagesProperty()
+          .addListener(
+              (property, oldValue, newValue) -> {
+                String[] lines = newValue.split("\n");
+                System.out.println(lines[lines.length - 1]);
+              });
       networkManager.sendMessage(new RegisterMessage(name));
       Thread consoleListener = new Thread(this::consoleListener);
       consoleListener.start();

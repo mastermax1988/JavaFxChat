@@ -17,8 +17,8 @@ task startServer(type: JavaExec){
 sourceCompatibility = 11
 targetCompatibility = 11
 
-//def mainClassName = "client.javafx.Main"
-def mainClassName = "client.console.Main"
+def mainClassName = "client.javafx.Main"
+//def mainClassName = "client.console.Main"
 
 application {
     mainClass.set(mainClassName)
