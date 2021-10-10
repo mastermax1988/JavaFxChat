@@ -23,8 +23,10 @@ def mainClassName = "client.console.Main"
 application {
     mainClass.set(mainClassName)
 }
+
 run {
-   standardInput = System.in
+    standardInput = System.in
+    systemProperty "file.encoding", "utf-8"
 }
 
 group 'edv.memmel'
