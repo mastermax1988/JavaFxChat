@@ -5,9 +5,12 @@
       <root url="file://$USER_HOME$/javafx/lib" />
       <root url="file://$USER_HOME$/javafx/lib" />
       <root url="file://$USER_HOME$/javafx/lib" />
+      <root url="file://$USER_HOME$/javafx/lib" />
+      <root url="file://$USER_HOME$/javafx/lib" />
     </CLASSES>
     <JAVADOC />
     <NATIVE>
+      <root url="file://$USER_HOME$/javafx/lib" />
       <root url="file://$USER_HOME$/javafx/lib" />
       <root url="file://$USER_HOME$/javafx/lib" />
     </NATIVE>
@@ -16,10 +19,16 @@
       <root url="file://$USER_HOME$/javafx/lib" />
       <root url="file://$USER_HOME$/javafx/lib" />
       <root url="file://$USER_HOME$/javafx/lib" />
+      <root url="file://$USER_HOME$/javafx/lib" />
+      <root url="file://$USER_HOME$/javafx/lib" />
     </SOURCES>
     <jarDirectory url="file://$USER_HOME$/javafx/lib" recursive="false" />
     <jarDirectory url="file://$USER_HOME$/javafx/lib" recursive="false" />
     <jarDirectory url="file://$USER_HOME$/javafx/lib" recursive="false" />
+    <jarDirectory url="file://$USER_HOME$/javafx/lib" recursive="false" />
+    <jarDirectory url="file://$USER_HOME$/javafx/lib" recursive="false" />
+    <jarDirectory url="file://$USER_HOME$/javafx/lib" recursive="false" type="SOURCES" />
+    <jarDirectory url="file://$USER_HOME$/javafx/lib" recursive="false" type="SOURCES" />
     <jarDirectory url="file://$USER_HOME$/javafx/lib" recursive="false" type="SOURCES" />
     <jarDirectory url="file://$USER_HOME$/javafx/lib" recursive="false" type="SOURCES" />
     <jarDirectory url="file://$USER_HOME$/javafx/lib" recursive="false" type="SOURCES" />

@@ -10,13 +10,15 @@ import java.util.Set;
 import messagetypes.ChatMessageRec;
 import messagetypes.ChatMessageSend;
 import messagetypes.EnterMsg;
+import messagetypes.LeaveMsg;
+import messagetypes.Message;
 import messagetypes.RegisterMessage;
 
 public class Server {
 
   private int port;
   private ServerSocket serverSocket;
-  private Set<ServerConnection> connections;
+  private final Set<ServerConnection> connections;
 
   public Server(int port) {
     this.port = port;
@@ -39,7 +41,6 @@ public class Server {
   private void awaitConnections() {
     while (!serverSocket.isClosed()) {
       try {
-        System.out.println("waiting...");
         Socket clientSocket = serverSocket.accept();
         ServerConnection serverConnection =
             new ServerConnection(
@@ -51,7 +52,7 @@ public class Server {
         t.start();
       } catch (IOException e) {
         System.out.println("Server died.");
-        break; // shuts down the server
+        return; // shuts down the server
       }
     }
   }
@@ -61,21 +62,30 @@ public class Server {
       while (serverConnection.socket.isConnected()) {
         Object msg = serverConnection.inputStream.readObject();
         if (msg instanceof RegisterMessage) {
+          System.out.println("Register message received " +  ((RegisterMessage) msg).name);
           serverConnection.clientName = ((RegisterMessage) msg).name;
-          for (ServerConnection c : connections) {
-            c.sendMessage(new EnterMsg(serverConnection.clientName));
-          }
+          sendToAllClients(new EnterMsg(serverConnection.clientName));
         } else if (msg instanceof ChatMessageSend) {
-          for (ServerConnection c : connections) {
-            c.sendMessage(
-                new ChatMessageRec(serverConnection.clientName, ((ChatMessageSend) msg).msg));
-          }
+          System.out.println("Chat message received from " + serverConnection.clientName);
+          sendToAllClients(new ChatMessageRec(serverConnection.clientName,((ChatMessageSend) msg).msg));
         }
       }
     } catch (ClassNotFoundException e) {
-      e.printStackTrace();
+      e.printStackTrace(); // will not happen
     } catch (IOException e) {
+      System.out.println("Connection lost from: " + serverConnection.clientName);
       connections.remove(serverConnection);
+      sendToAllClients(new LeaveMsg(serverConnection.clientName));
+    }
+  }
+
+  private void sendToAllClients(Message msg) {
+    for (ServerConnection c : connections) {
+      try {
+        c.sendMessage(msg);
+      } catch (IOException e) {
+        System.out.println("Error sending message: " + e);
+      }
     }
   }
 }

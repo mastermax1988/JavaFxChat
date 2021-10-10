@@ -2,7 +2,7 @@ package messagetypes;
 
 import java.io.Serializable;
 
-public class ChatMessageRec implements Serializable {
+public class ChatMessageRec extends Message {
 
   private static final long serialVersionUID = -2533962131796153882L;
 

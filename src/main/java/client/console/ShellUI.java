@@ -39,6 +39,7 @@ public class ShellUI {
     try {
       System.out.println("[Client]: Enter your name");
       name = in.readLine();
+      System.out.println("Type !quit to quit.");
       Thread serverListener = new Thread(this::serverListener);
       serverListener.start();
       clientConnection.outputStream.writeObject(new RegisterMessage(name));
@@ -73,6 +74,10 @@ public class ShellUI {
     try {
       while (true) {
         String msg = in.readLine();
+        if(msg.startsWith("!quit")){
+          clientConnection.outputStream.close();
+          return;
+        }
         clientConnection.outputStream.writeObject(new ChatMessageSend(msg));
       }
     } catch (IOException e) {
