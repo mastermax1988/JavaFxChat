@@ -7,8 +7,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import messagetypes.EnterMsg;
 import messagetypes.RegisterMessage;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -54,8 +56,13 @@ class ServerTest {
   @Test
   void testRegister() {
     try {
-      outputStream.writeObject(new RegisterMessage("test"));
-    } catch (IOException e) {
+      outputStream.writeObject(new RegisterMessage("Alice"));
+      Object resp = inputStream.readObject();
+      if (!(resp instanceof EnterMsg)) {
+        fail("Falsche Antwort");
+      }
+      Assertions.assertEquals("Alice",((EnterMsg) resp).name);
+    } catch (IOException | ClassNotFoundException e) {
       fail(e);
     }
   }
