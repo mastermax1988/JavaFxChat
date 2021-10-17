@@ -78,6 +78,9 @@ public class MainWindowFxController implements PropertyChangeListener {
   }
 
   private void addMessage(String messageString) {
-    Platform.runLater(() -> messagesList.add(messageString));
+    Platform.runLater(() -> {
+      messagesList.add(messageString);
+      messagesListView.scrollTo(messagesListView.getItems().size());
+    });
   }
 }
