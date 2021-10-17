@@ -1,5 +1,7 @@
 package client.net;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -15,13 +17,18 @@ import messagetypes.Message;
 
 public class NetworkManager {
 
+
+  public static final String USER_ENTERED = "userEntered";
+  public static final String USER_LEFT = "userLeft";
+  public static final String USER_MESSAGE = "userMessage";
   private static NetworkManager instance;
-  private boolean javaFxEnabled = false;
+  private PropertyChangeSupport propertyChangeSupport;
 
   private ClientConnection clientConnection;
   private StringProperty messages;
 
   private NetworkManager() {
+    propertyChangeSupport = new PropertyChangeSupport(this);
     messages = new SimpleStringProperty("");
   }
 
@@ -52,27 +59,18 @@ public class NetworkManager {
       while (true) {
         Object msg = clientConnection.inputStream.readObject();
         if (msg instanceof EnterMsg) {
-          addMessage("[SERVER]: " + ((EnterMsg) msg).name + " entered the chat.");
+          propertyChangeSupport.firePropertyChange(USER_ENTERED, null, ((EnterMsg) msg).name);
         } else if (msg instanceof LeaveMsg) {
-          addMessage("[SERVER]: " + ((LeaveMsg) msg).name + " left.");
+          propertyChangeSupport.firePropertyChange(USER_LEFT, null, ((LeaveMsg) msg).name);
         } else if (msg instanceof ChatMessageRec) {
           ChatMessageRec c = (ChatMessageRec) msg;
-          addMessage("[SERVER:" + c.name + "]: " + c.msg);
+          propertyChangeSupport.firePropertyChange(USER_MESSAGE, null, msg);
         }
       }
     } catch (IOException e) {
       System.out.println("Connection lost");
     } catch (ClassNotFoundException e) {
       e.printStackTrace();
-    }
-  }
-
-  private void addMessage(String messageString) {
-    String newValue = messages.getValue() + "\n" + messageString;
-    if (javaFxEnabled) {
-      Platform.runLater(() -> messages.set(newValue));
-    } else {
-      messages.set(newValue);
     }
   }
 
@@ -96,7 +94,11 @@ public class NetworkManager {
     return messages;
   }
 
-  public void setJavaFxEnabled(boolean javaFxEnabled) {
-    this.javaFxEnabled = javaFxEnabled;
+  public void addPropertyChangeListener(PropertyChangeListener propertyChangeListener) {
+    propertyChangeSupport.addPropertyChangeListener(propertyChangeListener);
+  }
+
+  public void removePropertyChangeListener(PropertyChangeListener propertyChangeListener) {
+    propertyChangeSupport.removePropertyChangeListener(propertyChangeListener);
   }
 }

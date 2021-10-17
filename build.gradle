@@ -9,9 +9,16 @@ plugins {
     id 'jacoco'
     id "com.github.spotbugs" version "4.7.5"
 }
+
 task startServer(type: JavaExec){
     classpath = sourceSets.main.runtimeClasspath;
     mainClass.set("server.Main")
+}
+
+task startConsoleClient(type: JavaExec){
+    standardInput = System.in
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass.set("client.console.Main")
 }
 
 sourceCompatibility = 11
