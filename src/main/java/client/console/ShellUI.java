@@ -9,8 +9,6 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import messagetypes.ChatMessageRec;
 import messagetypes.ChatMessageSend;
-import messagetypes.EnterMsg;
-import messagetypes.LeaveMsg;
 import messagetypes.RegisterMessage;
 
 public class ShellUI implements PropertyChangeListener {
@@ -31,13 +29,6 @@ public class ShellUI implements PropertyChangeListener {
       System.out.println("[Client]: Enter your name");
       name = in.readLine();
       System.out.println("Type !quit to quit.");
-      networkManager
-          .messagesProperty()
-          .addListener(
-              (property, oldValue, newValue) -> {
-                String[] lines = newValue.split("\n");
-                System.out.println(lines[lines.length - 1]);
-              });
       networkManager.sendMessage(new RegisterMessage(name));
       Thread consoleListener = new Thread(this::consoleListener);
       consoleListener.start();
@@ -75,6 +66,7 @@ public class ShellUI implements PropertyChangeListener {
         ChatMessageRec msg = (ChatMessageRec) evt.getNewValue();
         System.out.println("User " + msg.name + " wrote: " + msg.msg);
         break;
+      default:
     }
   }
 }

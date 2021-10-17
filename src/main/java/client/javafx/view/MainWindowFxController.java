@@ -74,13 +74,15 @@ public class MainWindowFxController implements PropertyChangeListener {
         ChatMessageRec msg = (ChatMessageRec) evt.getNewValue();
         addMessage("User " + msg.name + " wrote: " + msg.msg);
         break;
+      default:
     }
   }
 
   private void addMessage(String messageString) {
-    Platform.runLater(() -> {
-      messagesList.add(messageString);
-      messagesListView.scrollTo(messagesListView.getItems().size());
-    });
+    Platform.runLater(
+        () -> {
+          messagesList.add(messageString);
+          messagesListView.scrollTo(messagesListView.getItems().size());
+        });
   }
 }

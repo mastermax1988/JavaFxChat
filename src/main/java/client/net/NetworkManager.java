@@ -7,9 +7,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import javafx.application.Platform;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import messagetypes.ChatMessageRec;
 import messagetypes.EnterMsg;
 import messagetypes.LeaveMsg;
@@ -17,19 +14,16 @@ import messagetypes.Message;
 
 public class NetworkManager {
 
-
   public static final String USER_ENTERED = "userEntered";
   public static final String USER_LEFT = "userLeft";
   public static final String USER_MESSAGE = "userMessage";
   private static NetworkManager instance;
-  private PropertyChangeSupport propertyChangeSupport;
+  private final PropertyChangeSupport propertyChangeSupport;
 
   private ClientConnection clientConnection;
-  private StringProperty messages;
 
   private NetworkManager() {
     propertyChangeSupport = new PropertyChangeSupport(this);
-    messages = new SimpleStringProperty("");
   }
 
   public static synchronized NetworkManager getInstance() {
@@ -88,10 +82,6 @@ public class NetworkManager {
     } catch (IOException e) {
       e.printStackTrace();
     }
-  }
-
-  public StringProperty messagesProperty() {
-    return messages;
   }
 
   public void addPropertyChangeListener(PropertyChangeListener propertyChangeListener) {
