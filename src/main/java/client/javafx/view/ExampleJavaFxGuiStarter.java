@@ -20,6 +20,7 @@ public class ExampleJavaFxGuiStarter extends Application {
     Parent root = fxmlLoader.load();
     primaryStage.setTitle("Happy chatting!");
     primaryStage.setScene(new Scene(root, 500, 500));
+    primaryStage.setMinHeight(500);
     primaryStage.show();
   }
 }
